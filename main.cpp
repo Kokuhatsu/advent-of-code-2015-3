@@ -29,30 +29,35 @@ int main() {
 
     assert(input_file.is_open());
 
-    Pos current_position{};
-    std::unordered_set<Pos> visited_houses{current_position};
+    Pos santa_position{};
+    Pos robot_position{};
+    std::unordered_set<Pos> visited_houses{santa_position};
+
+    std::uint64_t step{0};
     while(input_file.eof() == false) {
         auto direction_char = input_file.get();
 
+        Pos* current_position = (step++) % 2 ? &santa_position : &robot_position;
+
         switch(direction_char) {
             case '<':
-                current_position.x--;
+                (current_position->x)--;
                 break;
             case '>':
-                current_position.x++;
+                (current_position->x)++;
                 break;
             case 'v':
-                current_position.y--;
+                (current_position->y)--;
                 break;
             case '^':
-                current_position.y++;
+                (current_position->y)++;
                 break;
             default:
                 continue;
                 break;
         }
 
-        visited_houses.insert(current_position);
+        visited_houses.insert(*current_position);
     }
 
     const auto visited_houses_count = visited_houses.size();
